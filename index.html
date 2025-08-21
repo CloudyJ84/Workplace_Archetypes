@@ -20,6 +20,34 @@
         .progress-bar-inner {
             transition: width 0.3s ease-in-out;
         }
+        /* Custom Slider Styles */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #4a5568; /* gray-700 */
+            border-radius: 5px;
+            outline: none;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #6366f1; /* indigo-600 */
+            cursor: pointer;
+            border-radius: 50%;
+            border: 4px solid #1f2937; /* gray-800 */
+        }
+        input[type=range]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #6366f1; /* indigo-600 */
+            cursor: pointer;
+            border-radius: 50%;
+            border: 4px solid #1f2937; /* gray-800 */
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200 flex items-center justify-center min-h-screen py-12">
@@ -46,14 +74,12 @@
 
         <!-- Result Screen -->
         <div id="result-screen" class="hidden text-center fade-in">
-            <!-- Primary Archetype -->
             <p class="text-indigo-400 font-semibold mb-2">YOUR PRIMARY ARCHETYPE</p>
             <h1 id="primary-archetype-emoji" class="text-7xl mb-4"></h1>
             <h2 id="primary-archetype-name" class="text-4xl font-bold text-white mb-3"></h2>
             <p id="primary-archetype-insight" class="text-lg text-gray-300 mb-4"></p>
             <p id="primary-archetype-description" class="text-gray-400 mb-8 max-w-md mx-auto"></p>
 
-            <!-- Secondary Archetype -->
             <div id="secondary-archetype-container" class="mb-8 p-4 bg-gray-700 rounded-lg">
                  <p class="text-gray-400 font-semibold mb-2">YOUR SECONDARY ARCHETYPE</p>
                  <div class="flex items-center justify-center gap-4">
@@ -65,7 +91,6 @@
                  </div>
             </div>
             
-            <!-- Actionable Content -->
             <div class="text-left bg-gray-900 p-6 rounded-lg border border-indigo-500/30">
                 <h3 class="font-bold text-indigo-400 text-lg mb-3">Interview Prep & Strategy</h3>
                 <div class="mb-4">
@@ -87,168 +112,45 @@
         document.addEventListener('DOMContentLoaded', () => {
             // --- DATA ---
             const archetypesData = {
-                "The Steward": { 
-                    emoji: "🏛️", 
-                    insight: "You’re not a cost—you’re an investment.", 
-                    description: "Balances cost with long-term value; sees the big picture.",
-                    reflection: "Prepare an interview story about a time you championed a long-term strategy over a short-term fix. What was the situation, and what was the positive long-term result?",
-                    leverage: "In an interview, describe your decision-making by saying, 'I always aim to balance immediate needs with the long-term health of the organization, ensuring my solutions are sustainable.'"
-                },
-                "The Craftsman": { 
-                    emoji: "⚙️", 
-                    insight: "Experience drives smarter output.", 
-                    description: "Works with precision, efficiency, and mastery.",
-                    reflection: "Think of a specific example where your years of experience allowed you to complete a project with higher quality and fewer errors than expected. How did you do it?",
-                    leverage: "When asked about your strengths, say: 'My experience has trained me to work with precision. I deliver high-quality, efficient results that don't need constant revision, saving time and resources.'"
-                },
-                "The Anchor": { 
-                    emoji: "🕰️", 
-                    insight: "Consistency is a bottom-line asset.", 
-                    description: "Brings stability, reliability, and calm under pressure.",
-                    reflection: "Prepare to discuss a time a project faced a crisis or unexpected setback. How did your steady presence and reliability help keep the team on track and focused?",
-                    leverage: "In an interview, connect your reliability to business outcomes: 'You can count on me to be a stabilizing force. I ensure that deadlines are met consistently and that the team remains productive, even under pressure.'"
-                },
-                "The Pillar": { 
-                    emoji: "🪢", 
-                    insight: "Loyalty reduces turnover costs.", 
-                    description: "Offers loyalty and structural integrity to teams.",
-                    reflection: "Identify a story where your deep knowledge of a company, process, or industry helped a team avoid a costly mistake. How did your tenure create that value?",
-                    leverage: "When asked about your career goals, say: 'I'm looking for a company where I can invest myself for the long haul and contribute to the team's long-term stability and success.'"
-                },
-                "The Bridge": { 
-                    emoji: " ", 
-                    insight: "Multigenerational teams outperform.", 
-                    description: "Connects generations, fostering innovation through collaboration.",
-                    reflection: "Think of an example where you successfully connected colleagues from different generations or departments. What was the project, and what innovative outcome did that collaboration produce?",
-                    leverage: "During an interview, describe your collaborative style: 'I naturally connect people and ideas. I enjoy creating age-diverse teams because I've seen firsthand how they produce more innovative solutions.'"
-                },
-                "The Torchbearer": { 
-                    emoji: "🔥", 
-                    insight: "Mentorship is value-added.", 
-                    description: "Passes on wisdom, elevates others, and mentors with purpose.",
-                    reflection: "Prepare a story about someone you've mentored. What skills did they develop, and how did your guidance contribute to their success and the team's overall capability?",
-                    leverage: "When discussing teamwork, highlight your mentorship skills: 'I see my role as a force multiplier. I don't just complete my own tasks; I elevate the entire team's performance by sharing my knowledge.'"
-                }
+                "The Steward": { emoji: "🏛️", insight: "You’re not a cost—you’re an investment.", description: "Balances cost with long-term value; sees the big picture.", reflection: "Prepare an interview story about a time you championed a long-term strategy over a short-term fix. What was the situation, and what was the positive long-term result?", leverage: "In an interview, describe your decision-making by saying, 'I always aim to balance immediate needs with the long-term health of the organization, ensuring my solutions are sustainable.'" },
+                "The Craftsman": { emoji: "⚙️", insight: "Experience drives smarter output.", description: "Works with precision, efficiency, and mastery.", reflection: "Think of a specific example where your years of experience allowed you to complete a project with higher quality and fewer errors than expected. How did you do it?", leverage: "When asked about your strengths, say: 'My experience has trained me to work with precision. I deliver high-quality, efficient results that don't need constant revision, saving time and resources.'" },
+                "The Anchor": { emoji: "🕰️", insight: "Consistency is a bottom-line asset.", description: "Brings stability, reliability, and calm under pressure.", reflection: "Prepare to discuss a time a project faced a crisis or unexpected setback. How did your steady presence and reliability help keep the team on track and focused?", leverage: "In an interview, connect your reliability to business outcomes: 'You can count on me to be a stabilizing force. I ensure that deadlines are met consistently and that the team remains productive, even under pressure.'" },
+                "The Pillar": { emoji: "🪢", insight: "Loyalty reduces turnover costs.", description: "Offers loyalty and structural integrity to teams.", reflection: "Identify a story where your deep knowledge of a company, process, or industry helped a team avoid a costly mistake. How did your tenure create that value?", leverage: "When asked about your career goals, say: 'I'm looking for a company where I can invest myself for the long haul and contribute to the team's long-term stability and success.'" },
+                "The Bridge": { emoji: "🌱", insight: "Multigenerational teams outperform.", description: "Connects generations, fostering innovation through collaboration.", reflection: "Think of an example where you successfully connected colleagues from different generations or departments. What was the project, and what innovative outcome did that collaboration produce?", leverage: "During an interview, describe your collaborative style: 'I naturally connect people and ideas. I enjoy creating age-diverse teams because I've seen firsthand how they produce more innovative solutions.'" },
+                "The Torchbearer": { emoji: "🔥", insight: "Mentorship is value-added.", description: "Passes on wisdom, elevates others, and mentors with purpose.", reflection: "Prepare a story about someone you've mentored. What skills did they develop, and how did your guidance contribute to their success and the team's overall capability?", leverage: "When discussing teamwork, highlight your mentorship skills: 'I see my role as a force multiplier. I don't just complete my own tasks; I elevate the entire team's performance by sharing my knowledge.'" }
             };
 
             const questions = [
-                // --- Original 6 Questions ---
-                {
-                    text: "When starting a major new project, what is your primary focus?",
-                    answers: [
-                        { text: "Ensuring it provides lasting value and aligns with long-term goals.", archetype: "The Steward" },
-                        { text: "Building a strong, cohesive team that can rely on each other.", archetype: "The Pillar" },
-                        { text: "Perfecting the technical details for the highest quality output.", archetype: "The Craftsman" },
-                        { text: "Establishing clear, repeatable processes for consistent progress.", archetype: "The Anchor" }
-                    ]
-                },
-                {
-                    text: "A junior colleague makes a significant mistake. How do you first react?",
-                    answers: [
-                        { text: "Use it as a teaching moment to guide them toward the right solution.", archetype: "The Torchbearer" },
-                        { text: "Focus on calmly fixing the issue and stabilizing the project.", archetype: "The Anchor" },
-                        { text: "Analyze the process that led to the error to prevent it from happening again.", archetype: "The Craftsman" },
-                        { text: "Reassure them and reinforce their role as a valuable team member.", archetype: "The Pillar" }
-                    ]
-                },
-                {
-                    text: "How would your colleagues most likely describe you during a high-pressure situation?",
-                    answers: [
-                        { text: "The calm in the storm, steady and reliable.", archetype: "The Anchor" },
-                        { text: "The one who holds the team together, ensuring everyone feels supported.", archetype: "The Pillar" },
-                        { text: "The expert who can solve the core technical problem.", archetype: "The Craftsman" },
-                        { text: "The one who reminds everyone of the bigger picture and long-term goals.", archetype: "The Steward" }
-                    ]
-                },
-                {
-                    text: "You're asked to learn a complex new software. What's your method?",
-                    answers: [
-                        { text: "Master its core functions deeply to ensure my work is flawless.", archetype: "The Craftsman" },
-                        { text: "Understand how it integrates with the company's long-term tech strategy.", archetype: "The Steward" },
-                        { text: "Learn it alongside a junior colleague, sharing insights as we go.", archetype: "The Bridge" },
-                        { text: "Become the go-to person for it, so I can help others who are struggling.", archetype: "The Torchbearer" }
-                    ]
-                },
-                {
-                    text: "Which part of your job do you find most personally fulfilling?",
-                    answers: [
-                        { text: "Seeing a project through, knowing it was built for long-term value.", archetype: "The Steward" },
-                        { text: "Helping younger colleagues develop their skills and find their path.", archetype: "The Torchbearer" },
-                        { text: "Connecting different people and ideas to create something innovative.", archetype: "The Bridge" },
-                        { text: "Mastering a complex skill and producing work of exceptional quality.", archetype: "The Craftsman" }
-                    ]
-                },
-                {
-                    text: "A potential employer asks how you handle workplace conflict. You say you prioritize:",
-                    answers: [
-                        { text: "Finding common ground between different perspectives and people.", archetype: "The Bridge" },
-                        { text: "Maintaining team stability and minimizing disruption.", archetype: "The Anchor" },
-                        { text: "Reinforcing shared goals and commitment to the team's success.", archetype: "The Pillar" },
-                        { text: "Focusing on the long-term health and goals of the organization.", archetype: "The Steward" }
-                    ]
-                },
-                // --- New 6 Questions ---
-                {
-                    text: "What do you believe is the most underrated contributor to a company's success?",
-                    answers: [
-                        { text: "Deep institutional knowledge that prevents repeating past mistakes.", archetype: "The Pillar" },
-                        { text: "The synergy from different age groups and perspectives working together.", archetype: "The Bridge" },
-                        { text: "Quiet, consistent effort that keeps projects on track day after day.", archetype: "The Anchor" },
-                        { text: "The transfer of skills and wisdom to the next generation of workers.", archetype: "The Torchbearer" }
-                    ]
-                },
-                {
-                    text: "How do you define 'success' in an interview for a new role?",
-                    answers: [
-                        { text: "Clearly demonstrating how my skills will produce impeccable work.", archetype: "The Craftsman" },
-                        { text: "Showing how my experience aligns with the company's long-term vision.", archetype: "The Steward" },
-                        { text: "Building a genuine connection with interviewers from different backgrounds.", archetype: "The Bridge" },
-                        { text: "Conveying my commitment and desire to grow with the company.", archetype: "The Pillar" }
-                    ]
-                },
-                {
-                    text: "When a company undergoes a major, disruptive change, what is your main concern?",
-                    answers: [
-                        { text: "Ensuring the team's morale and sense of security remain intact.", archetype: "The Pillar" },
-                        { text: "Helping junior team members navigate the uncertainty.", archetype: "The Torchbearer" },
-                        { text: "Maintaining operational stability and predictable workflows.", archetype: "The Anchor" },
-                        { text: "Understanding the long-term strategic reason for the change.", archetype: "The Steward" }
-                    ]
-                },
-                {
-                    text: "You're asked to improve a process your team has used for years. What's your approach?",
-                    answers: [
-                        { text: "Analyze every step, looking for efficiencies to perfect the methodology.", archetype: "The Craftsman" },
-                        { text: "Bring together team members of all ages to brainstorm new approaches.", archetype: "The Bridge" },
-                        { text: "Consider how the change will impact the team's stability and morale.", archetype: "The Anchor" },
-                        { text: "Mentor junior colleagues through the change, sharing my experience.", archetype: "The Torchbearer" }
-                    ]
-                },
-                {
-                    text: "What kind of team dynamic helps you do your best work?",
-                    answers: [
-                        { text: "A stable, reliable team where processes are clear and respected.", archetype: "The Anchor" },
-                        { text: "A loyal, tight-knit group that supports each other through challenges.", archetype: "The Pillar" },
-                        { text: "A collaborative environment where I can guide and uplift others.", archetype: "The Torchbearer" },
-                        { text: "A diverse team where different viewpoints spark new ideas.", archetype: "The Bridge" }
-                    ]
-                },
-                {
-                    text: "When you think about your legacy at a company, what comes to mind first?",
-                    answers: [
-                        { text: "The knowledge and skills I've passed on to the next generation.", archetype: "The Torchbearer" },
-                        { text: "The sustainable, long-term value I helped create for the organization.", archetype: "The Steward" },
-                        { text: "The reputation for excellence and mastery in my field.", archetype: "The Craftsman" },
-                        { text: "The unwavering support and loyalty I provided to my team.", archetype: "The Pillar" }
-                    ]
-                }
+                // Type: multiple-choice
+                { type: 'multiple-choice', text: "When starting a major new project, what is your primary focus?", answers: [{ text: "Ensuring it provides lasting value and aligns with long-term goals.", archetype: "The Steward" }, { text: "Building a strong, cohesive team that can rely on each other.", archetype: "The Pillar" }, { text: "Perfecting the technical details for the highest quality output.", archetype: "The Craftsman" }, { text: "Establishing clear, repeatable processes for consistent progress.", archetype: "The Anchor" }] },
+                // Type: sjt (Situational Judgment)
+                { type: 'sjt', text: "Scenario: Your team is about to miss a critical deadline. What is your most likely first action?", answers: [{ text: "Rally the team, reinforcing morale and mutual support.", archetype: "The Pillar" }, { text: "Triage the remaining tasks to ensure the most vital parts are completed.", archetype: "The Steward" }, { text: "Step in to mentor a struggling team member to get them over the finish line.", archetype: "The Torchbearer" }] },
+                // Type: most-least
+                { type: 'most-least', text: "From the following, select the options MOST and LEAST like you.", answers: [{ text: "I am the calm in the storm, steady and reliable.", archetype: "The Anchor" }, { text: "I am the expert who can solve the core technical problem.", archetype: "The Craftsman" }, { text: "I am the one who holds the team together, ensuring everyone feels supported.", archetype: "The Pillar" }, { text: "I am the one who reminds everyone of the bigger picture and long-term goals.", archetype: "The Steward" }] },
+                // Type: slider
+                { type: 'slider', text: "Where do you find more professional satisfaction?", options: { left: { text: "Perfecting a craft", archetype: "The Craftsman" }, right: { text: "Mentoring a colleague", archetype: "The Torchbearer" } } },
+                // Type: multiple-choice
+                { type: 'multiple-choice', text: "What do you believe is the most underrated contributor to a company's success?", answers: [{ text: "Deep institutional knowledge that prevents repeating past mistakes.", archetype: "The Pillar" }, { text: "The synergy from different age groups and perspectives working together.", archetype: "The Bridge" }, { text: "Quiet, consistent effort that keeps projects on track day after day.", archetype: "The Anchor" }, { text: "The transfer of skills and wisdom to the next generation of workers.", archetype: "The Torchbearer" }] },
+                // Type: sjt
+                { type: 'sjt', text: "Scenario: A junior colleague makes a significant mistake. How do you first react?", answers: [{ text: "Use it as a teaching moment to guide them toward the right solution.", archetype: "The Torchbearer" }, { text: "Focus on calmly fixing the issue and stabilizing the project.", archetype: "The Anchor" }, { text: "Analyze the process that led to the error to prevent it from happening again.", archetype: "The Craftsman" }] },
+                // Type: most-least
+                { type: 'most-least', text: "When a company undergoes a major, disruptive change, which options are MOST and LEAST like you?", answers: [{ text: "I focus on helping junior team members navigate the uncertainty.", archetype: "The Torchbearer" }, { text: "I focus on maintaining operational stability and predictable workflows.", archetype: "The Anchor" }, { text: "I focus on understanding the long-term strategic reason for the change.", archetype: "The Steward" }, { text: "I focus on ensuring the team's morale and sense of security remain intact.", archetype: "The Pillar" }] },
+                // Type: slider
+                { type: 'slider', text: "Which is a more accurate description of your approach?", options: { left: { text: "Connecting different people and ideas", archetype: "The Bridge" }, right: { text: "Ensuring long-term financial value", archetype: "The Steward" } } },
+                // Type: multiple-choice
+                { type: 'multiple-choice', text: "What kind of team dynamic helps you do your best work?", answers: [{ text: "A stable, reliable team where processes are clear and respected.", archetype: "The Anchor" }, { text: "A loyal, tight-knit group that supports each other through challenges.", archetype: "The Pillar" }, { text: "A collaborative environment where I can guide and uplift others.", archetype: "The Torchbearer" }, { text: "A diverse team where different viewpoints spark new ideas.", archetype: "The Bridge" }] },
+                // Type: sjt
+                { type: 'sjt', text: "Scenario: You're asked to learn a complex new software. What's your method?", answers: [{ text: "Master its core functions deeply to ensure my work is flawless.", archetype: "The Craftsman" }, { text: "Learn it alongside a junior colleague, sharing insights as we go.", archetype: "The Bridge" }, { text: "Become the go-to person for it, so I can help others who are struggling.", archetype: "The Torchbearer" }] },
+                // Type: most-least
+                { type: 'most-least', text: "When you think about your legacy, which are MOST and LEAST important?", answers: [{ text: "The knowledge I've passed on to the next generation.", archetype: "The Torchbearer" }, { text: "The sustainable, long-term value I helped create.", archetype: "The Steward" }, { text: "The reputation for excellence and mastery in my field.", archetype: "The Craftsman" }, { text: "The unwavering support and loyalty I provided to my team.", archetype: "The Pillar" }] },
+                // Type: slider
+                { type: 'slider', text: "When there's a conflict, where does your focus naturally go?", options: { left: { text: "Maintaining team stability", archetype: "The Anchor" }, right: { text: "Building team loyalty", archetype: "The Pillar" } } },
             ];
 
-            // --- STATE ---
             let currentQuestionIndex = 0;
             let scores = {};
+            let mostLeastState = { most: null, least: null };
 
-            // --- DOM ELEMENTS ---
             const startScreen = document.getElementById('start-screen');
             const quizScreen = document.getElementById('quiz-screen');
             const resultScreen = document.getElementById('result-screen');
@@ -258,7 +160,6 @@
             const answersContainer = document.getElementById('answers-container');
             const progressBar = document.getElementById('progress-bar');
 
-            // --- FUNCTIONS ---
             function startQuiz() {
                 startScreen.classList.add('hidden');
                 quizScreen.classList.remove('hidden');
@@ -268,26 +169,156 @@
             }
 
             function showQuestion() {
-                const question = questions[currentQuestionIndex];
-                questionText.textContent = question.text;
-                answersContainer.innerHTML = '';
-                
                 const progress = ((currentQuestionIndex) / questions.length) * 100;
                 progressBar.style.width = `${progress}%`;
+                answersContainer.innerHTML = '';
+                mostLeastState = { most: null, least: null };
 
-                question.answers.forEach(answer => {
+                const question = questions[currentQuestionIndex];
+                questionText.textContent = question.text;
+
+                switch (question.type) {
+                    case 'multiple-choice':
+                    case 'sjt':
+                        renderButtons(question.answers);
+                        break;
+                    case 'slider':
+                        renderSlider(question.options);
+                        break;
+                    case 'most-least':
+                        renderMostLeast(question.answers);
+                        break;
+                }
+            }
+
+            function renderButtons(answers) {
+                answers.forEach(answer => {
                     const button = document.createElement('button');
                     button.textContent = answer.text;
                     button.classList.add('w-full', 'text-left', 'p-4', 'bg-gray-700', 'text-gray-200', 'rounded-lg', 'hover:bg-indigo-600', 'hover:ring-2', 'hover:ring-indigo-400', 'focus:outline-none', 'focus:ring-2', 'focus:ring-indigo-500', 'transition-all', 'duration-200');
-                    button.onclick = () => selectAnswer(answer.archetype);
+                    button.onclick = () => {
+                        scores[answer.archetype]++;
+                        nextQuestion();
+                    };
                     answersContainer.appendChild(button);
                 });
             }
 
-            function selectAnswer(archetype) {
-                scores[archetype]++;
-                currentQuestionIndex++;
+            function renderSlider(options) {
+                const sliderContainer = document.createElement('div');
+                sliderContainer.className = 'w-full';
+                
+                const labelsContainer = document.createElement('div');
+                labelsContainer.className = 'flex justify-between text-sm text-gray-400 mb-2';
+                labelsContainer.innerHTML = `<span>${options.left.text}</span><span>${options.right.text}</span>`;
+                
+                const slider = document.createElement('input');
+                slider.type = 'range';
+                slider.min = 0;
+                slider.max = 100;
+                slider.value = 50;
+                
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Next';
+                nextButton.className = 'mt-6 bg-indigo-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-indigo-700 transition-colors';
+                nextButton.onclick = () => {
+                    const value = parseInt(slider.value);
+                    if (value < 50) {
+                        scores[options.left.archetype] += (50 - value) / 50; // Max +1 for left
+                        scores[options.right.archetype] += value / 50;
+                    } else {
+                        scores[options.right.archetype] += (value - 50) / 50; // Max +1 for right
+                        scores[options.left.archetype] += (100 - value) / 50;
+                    }
+                    nextQuestion();
+                };
 
+                sliderContainer.appendChild(labelsContainer);
+                sliderContainer.appendChild(slider);
+                answersContainer.appendChild(sliderContainer);
+                answersContainer.appendChild(nextButton);
+            }
+
+            function renderMostLeast(answers) {
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+
+                answers.forEach((answer, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'p-4 bg-gray-700 rounded-lg flex flex-col justify-between';
+                    optionDiv.innerHTML = `<p class="text-gray-200 mb-4">${answer.text}</p>`;
+                    
+                    const buttonGroup = document.createElement('div');
+                    buttonGroup.className = 'flex gap-2';
+
+                    const mostBtn = document.createElement('button');
+                    mostBtn.textContent = 'Most';
+                    mostBtn.dataset.index = index;
+                    mostBtn.dataset.archetype = answer.archetype;
+                    mostBtn.className = 'flex-1 bg-gray-600 text-sm py-2 rounded hover:bg-green-500 most-btn';
+                    
+                    const leastBtn = document.createElement('button');
+                    leastBtn.textContent = 'Least';
+                    leastBtn.dataset.index = index;
+                    leastBtn.dataset.archetype = answer.archetype;
+                    leastBtn.className = 'flex-1 bg-gray-600 text-sm py-2 rounded hover:bg-red-500 least-btn';
+
+                    buttonGroup.appendChild(mostBtn);
+                    buttonGroup.appendChild(leastBtn);
+                    optionDiv.appendChild(buttonGroup);
+                    optionsContainer.appendChild(optionDiv);
+                });
+
+                answersContainer.appendChild(optionsContainer);
+                
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Next';
+                nextButton.id = 'ml-next-btn';
+                nextButton.className = 'mt-6 bg-indigo-800 text-white font-bold py-2 px-6 rounded-lg transition-colors cursor-not-allowed';
+                nextButton.disabled = true;
+                nextButton.onclick = () => {
+                    scores[mostLeastState.most] += 2;
+                    scores[mostLeastState.least] -= 1;
+                    nextQuestion();
+                };
+                answersContainer.appendChild(nextButton);
+
+                document.querySelectorAll('.most-btn').forEach(btn => btn.onclick = (e) => handleMostLeastClick(e, 'most'));
+                document.querySelectorAll('.least-btn').forEach(btn => btn.onclick = (e) => handleMostLeastClick(e, 'least'));
+            }
+
+            function handleMostLeastClick(event, type) {
+                const selectedBtn = event.target;
+                const { archetype, index } = selectedBtn.dataset;
+                
+                if (type === 'most') {
+                    if (mostLeastState.least === archetype) return; // Can't be most and least
+                    mostLeastState.most = archetype;
+                    document.querySelectorAll('.most-btn').forEach(btn => {
+                        btn.classList.remove('bg-green-500');
+                        btn.classList.add('bg-gray-600');
+                    });
+                    selectedBtn.classList.add('bg-green-500');
+                } else { // type === 'least'
+                    if (mostLeastState.most === archetype) return; // Can't be most and least
+                    mostLeastState.least = archetype;
+                    document.querySelectorAll('.least-btn').forEach(btn => {
+                        btn.classList.remove('bg-red-500');
+                        btn.classList.add('bg-gray-600');
+                    });
+                     selectedBtn.classList.add('bg-red-500');
+                }
+
+                const nextBtn = document.getElementById('ml-next-btn');
+                if (mostLeastState.most && mostLeastState.least) {
+                    nextBtn.disabled = false;
+                    nextBtn.classList.remove('bg-indigo-800', 'cursor-not-allowed');
+                    nextBtn.classList.add('bg-indigo-600');
+                }
+            }
+
+            function nextQuestion() {
+                currentQuestionIndex++;
                 if (currentQuestionIndex < questions.length) {
                     showQuestion();
                 } else {
@@ -301,7 +332,7 @@
                 progressBar.style.width = '100%';
 
                 const sortedScores = Object.entries(scores).sort(([,a],[,b]) => b-a);
-                const [primaryArchetype, primaryScore] = sortedScores[0];
+                const [primaryArchetype] = sortedScores[0];
                 const [secondaryArchetype, secondaryScore] = sortedScores[1];
 
                 const primaryData = archetypesData[primaryArchetype];
@@ -311,7 +342,7 @@
                 document.getElementById('primary-archetype-description').textContent = primaryData.description;
 
                 const secondaryContainer = document.getElementById('secondary-archetype-container');
-                if (secondaryScore > 0) {
+                if (secondaryScore >= 0) { // Show secondary even if score is 0 but it's second place
                     const secondaryData = archetypesData[secondaryArchetype];
                     document.getElementById('secondary-archetype-emoji').textContent = secondaryData.emoji;
                     document.getElementById('secondary-archetype-name').textContent = secondaryArchetype;
@@ -325,7 +356,6 @@
                 document.getElementById('leverage-tip').textContent = primaryData.leverage;
             }
 
-            // --- EVENT LISTENERS ---
             startBtn.addEventListener('click', startQuiz);
             restartBtn.addEventListener('click', () => {
                 resultScreen.classList.add('hidden');
@@ -335,4 +365,3 @@
     </script>
 </body>
 </html>
- 
